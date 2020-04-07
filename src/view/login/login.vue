@@ -10,11 +10,11 @@
       </div>
 
       <!-- 表单 -->
-    <el-form :model="form" :rules='rules' ref="form">
-      <el-form-item prop='phone'>
-        <el-input prefix-icon="el-icon-user" v-model="form.phone" placeholder="请输入手机号"></el-input>
-      </el-form-item>
-      <el-form-item prop="password">
+      <el-form :model="form" :rules="rules" ref="form">
+        <el-form-item prop="phone">
+          <el-input prefix-icon="el-icon-user" v-model="form.phone" placeholder="请输入手机号"></el-input>
+        </el-form-item>
+        <el-form-item prop="password">
           <el-input
             :show-password="true"
             prefix-icon="el-icon-lock"
@@ -22,66 +22,99 @@
             placeholder="请输入密码"
           ></el-input>
         </el-form-item>
-        <el-form-item prop='code'>
+        <!-- 栅栏处理共24栏
+             el-row：行
+                它有一个子项是el-col 代表栏 多少栏  :span="栏数"
+        -->
+        <el-form-item prop="code">
           <el-row>
             <el-col :span="16">
               <el-input v-model="form.code" prefix-icon="el-icon-key" placeholder="请输入图形验证码"></el-input>
             </el-col>
             <el-col :span="8">
-            <img src="@/assets/img/key.png" class="key" alt="">
+              <img src="@/assets/img/key.png" class="key" alt />
             </el-col>
           </el-row>
         </el-form-item>
+        <!-- 
+          el-checkbox
+          v-model默认值可以来一个空字符串，这样的的选择结果就是true/false
+          el-link  type决定颜色 
+        -->
         <el-form-item v-model="form.isCheck">
-          <el-checkbox>我已阅读并同意<el-link type="primary">用户协议</el-link>和<el-link type="primary">隐私条款</el-link>
+          <el-checkbox>
+            我已阅读并同意
+            <el-link type="primary">用户协议</el-link>和
+            <el-link type="primary">隐私条款</el-link>
           </el-checkbox>
         </el-form-item>
         <el-form-item>
-         <el-button class="btn" type="primary" @click="loginClick">登录</el-button>
+          <el-button class="btn" type="primary" @click="loginClick">登录</el-button>
         </el-form-item>
         <el-form-item>
-         <el-button class="btn" type="primary">注册</el-button>
+          <el-button class="btn" type="primary" @click="registerClick">注册</el-button>
         </el-form-item>
-    </el-form>
- 
+      </el-form>
     </div>
     <div class="right">
       <img src="@/assets/img/login_banner_ele.png" alt />
     </div>
+    <!-- 组件中套用其它组件
+    1：导入子组件   import 名字 from 路径
+    2:注册   components:{register}
+    3:当标签使用  
+    -->
+    <register ref="register"></register>
   </div>
 </template>
 
 <script>
+// 导入
+import register from "./register";
+// 注册
 export default {
   name: "login",
+  components: {
+    register
+  },
   data() {
     return {
-      form:{
-        phone:"", // 手机号
-        password:"",  //密码
-        isCheck:"", //条款
-        code:''//验证码
-
+      form: {
+        phone: "", // 手机号
+        password: "", //密码
+        isCheck: "", //条款
+        code: "" //验证码
       },
-      rules:{
-        phone:[{required: true, message: '请输入手机号', trigger: 'change'},],
-        password:[{required: true, message: '请输入密码', trigger: 'change'},
-        {min:6,max:12,message:"请输入6-12位长度的密码",trigger: 'change'}
+      rules: {
+        phone: [{ required: true, message: "请输入手机号", trigger: "change" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "change" },
+          {
+            min: 6,
+            max: 12,
+            message: "请输入6-12位长度的密码",
+            trigger: "change"
+          }
         ],
-         code:[{required: true, message: '请输入图形验证码', trigger: 'change'},
-        {min:4,max:4,message:"请输入正确的验证码",trigger: 'change'}
+        code: [
+          { required: true, message: "请输入图形验证码", trigger: "change" },
+          { min: 4, max: 4, message: "请输入正确的验证码", trigger: "change" }
         ]
       }
-    }
+    };
   },
   methods: {
-    loginClick(){
-      this.$refs.form.validate(result =>{
-        this.$message.success(result+'')
-      })
+    // 登录点击
+    loginClick() {
+      this.$refs.form.validate(result => {
+        this.$message.success(result + "");
+      });
+    },
+    // 注册点击
+    registerClick() {
+      this.$refs.register.dialogFormVisible = true;
     }
-  },
-
+  }
 };
 </script>
 
@@ -126,7 +159,7 @@ export default {
       width: 100%;
       height: 40px;
     }
-    .btn{
+    .btn {
       width: 100%;
     }
   }
