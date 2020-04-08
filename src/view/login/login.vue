@@ -70,7 +70,7 @@
 
 <script>
 // 导入
-import register from "./register";
+import register from "./register.vue";
 // 注册
 export default {
   name: "login",
@@ -103,6 +103,9 @@ export default {
       }
     };
   },
+    // mounted() {
+    // alert(process.env.VUE_APP_URL);
+  // },
   methods: {
     // 登录点击
     loginClick() {
@@ -112,13 +115,15 @@ export default {
     },
     // 注册点击
     registerClick() {
+       // 1：在register组件 上定义一个ref属性  ref=值
+      //2：通过this.$refs.值.dialogFormVisible=true
       this.$refs.register.dialogFormVisible = true;
     }
   }
 };
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .login {
   // 弹性盒子布局
   display: flex;
