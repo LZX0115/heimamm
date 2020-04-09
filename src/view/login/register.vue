@@ -13,7 +13,7 @@
     -->
     <div slot="title" class="title">用户注册</div>
     <el-form :model="form" label-width="100px" ref="form" :rules="rules">
-     <!-- 给头像加入表单验证 -->
+      <!-- 给头像加入表单验证 -->
       <el-form-item label="头像" prop="avatar">
         <!-- 上传东西
             el-upload
@@ -28,7 +28,7 @@
               该回调函数return的值就是控制让不让你通过  true通过  false不通过
 
         -->
-       <el-upload
+        <el-upload
           class="avatar-uploader"
           :action="baseUrl+'/uploads'"
           name="image"
@@ -60,32 +60,33 @@
       el-row  行
       el-col  列  :span="值1" :offset="值2"   offset左移偏移栏数
       -->
-       <el-form-item label="图形码" prop="code">
+      <el-form-item label="图形码" prop="code">
         <el-row>
           <el-col :span="16">
             <el-input v-model="form.code"></el-input>
           </el-col>
           <el-col :span="7" :offset="1">
-              <!-- 点击 验证码切换，改变它的url地址就可以了，加个随机数就可以了-->
-            <img class="code" :src="codeUrl"  @click="changeCodeUrl" alt />
+            <!-- 点击 验证码切换，改变它的url地址就可以了，加个随机数就可以了-->
+            <img class="code" :src="codeUrl" @click="changeCodeUrl" alt />
           </el-col>
         </el-row>
       </el-form-item>
-        <!-- 验证码 -->
+      <!-- 验证码 -->
       <el-form-item label="验证码" prop="rcode">
         <el-row>
           <el-col :span="16">
             <el-input v-model="form.rcode"></el-input>
           </el-col>
           <el-col :span="7" :offset="1">
-            <el-button @click="getRecode" :disabled="timeout>0 && timeout<60">获取验证码
-                <span v-if="timeout>0 && timeout<60">{{timeout}}</span>
+            <el-button @click="getRecode" :disabled="timeout!=60">
+              获取验证码
+              <span v-if="timeout!=60">{{timeout}}</span>
             </el-button>
           </el-col>
         </el-row>
       </el-form-item>
     </el-form>
-       <!-- 加一个确定按钮 -->
+    <!-- 加一个确定按钮 -->
     <div slot="footer" class="center">
       <el-button>取消</el-button>
       <el-button type="primary" @click="submitClick">确定</el-button>
@@ -94,14 +95,14 @@
 </template>
 
 <script>
-import getPhoneCode from '@/api/register.js'
+import { getPhoneCode, register } from "@/api/register.js";
 export default {
   data() {
     return {
       dialogFormVisible: false,
-       codeUrl: process.env.VUE_APP_URL + "/captcha?type=sendsms",
-       // 发送短信验证码60秒不允许 再调用
-         timeout: 60,
+      codeUrl: process.env.VUE_APP_URL + "/captcha?type=sendsms",
+      // 发送短信验证码60秒不允许 再调用
+      timeout: 60,
       // 表单数据
       form: {
         // 头像地址
@@ -110,16 +111,16 @@ export default {
         email: "", //邮箱
         phone: "", //手机
         password: "", //手机
-        code: "" ,//验证码
+        code: "", //验证码
         rcode: "" //手机验证码
       },
-      rules:{
-         // trigger主动触发在没有在元素里面使用v-model的情况它是无效的
-       avatar: [{ required: true, message: "请上传头像", trigger: "change" }],
+      rules: {
+        // trigger主动触发在没有在元素里面使用v-model的情况它是无效的
+        avatar: [{ required: true, message: "请上传头像", trigger: "change" }],
         username: [
           { required: true, message: "请填写昵称", trigger: "change" }
         ],
-          /*
+        /*
         自定义表单校验  
         validator:(rule,value,callback){
           rule:规则
@@ -129,21 +130,21 @@ export default {
           不通过callback("错误信息")
         }
         */
-       email:[
-         { required: true, message: "请输入邮箱", trigger: "change" },
-         {
-           validator:(rule,value,callback) =>{
+        email: [
+          { required: true, message: "请输入邮箱", trigger: "change" },
+          {
+            validator: (rule, value, callback) => {
               // 正则校验
               let _reg = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
               if (_reg.test(value)) {
                 callback();
               } else {
-                callback("请输入正确的邮箱地址")
+                callback("请输入正确的邮箱地址");
               }
-           }
-         }
-         ],
-          phone: [
+            }
+          }
+        ],
+        phone: [
           { required: true, message: "请输入手机号", trigger: "change" },
           {
             validator: (rule, value, callback) => {
@@ -166,7 +167,26 @@ export default {
           { min: 4, max: 4, message: "请输入4位验证码", trigger: "change" }
         ]
       },
-      
+        // 监听器
+  /*
+  对某个值进行一个监听，如果它改变了，可以对它进行一些相应处理
+  // 只要dialogFormVisible为false了就要清空表单
+  1：放到watch:{}
+  2：写要要监听的值  this.dialogFormVisible
+  3：去掉this把该传转换成字符串 dialogFormVisible
+  4:监听器本质就是一个function (newVal,oldval){}
+     newVal当前值，oldVal修改前一刻的值
+  */
+      watch: {
+        dialogFormVisible(newVal) {
+          if (newVal == false) {
+            // 清空表单
+            this.$refs.form.resetFields();
+            // 将图片置空
+            this.imageUrl = "";
+          }
+        }
+      },
       baseUrl: process.env.VUE_APP_URL,
       imageUrl: "" //只是纯展示那个图片的地址
     };
@@ -208,29 +228,38 @@ export default {
       // 1：在el-form上定义一个ref   2:调用el-form上的validate方法
       this.$refs.form.validate(result => {
         window.console.log(result);
+        if (result) {
+          register(this.form).then(res => {
+            window.console.log("注册返回信息", res);
+            if (res.data.code == 200) {
+              this.$message.success("注册成功");
+              this.dialogFormVisible = false;
+            }
+          });
+        }
       });
     },
-      // 点击切换验证码
-    changeCodeUrl(){
-        this.codeUrl =
+    // 点击切换验证码
+    changeCodeUrl() {
+      this.codeUrl =
         process.env.VUE_APP_URL + "/captcha?type=sendsms&t=" + Date.now();
     },
-  getRecode(){
-     // 访问el-form上的validateField该方法
+    getRecode() {
+      // 访问el-form上的validateField该方法
       //该方法有二个参数，
       // 第一个是要验证的项,支持string|array  该项的值就是prop的值
       // 第二个参数是一个function function的参数是验证时的错误信息返回，当返回信息为空（没有错误），表示验证通过，不为空验证不通过
       // 需求是二次都通过才行
-        let _pass = true;
-       this.$refs.form.validateField(["code", "phone"], error => {
+      let _pass = true;
+      this.$refs.form.validateField(["code", "phone"], error => {
         if (error != "") {
           _pass = false;
         }
       });
-       if (_pass === false) {
+      if (_pass === false) {
         return;
       } else {
-          this.timeout--;
+        this.timeout--;
         let interTime = setInterval(() => {
           this.timeout--;
           if (this.timeout == 0) {
@@ -252,11 +281,11 @@ export default {
           code: this.form.code,
           phone: this.form.phone
         }).then(res => {
-          this.$message.success(res.data.data.captcha + "");
+          this.$message.success(res.data.captcha + "");
           window.console.log(res);
         });
       }
-  }
+    }
   }
 };
 </script>
@@ -281,33 +310,33 @@ export default {
     padding: 0;
   }
 
-.avatar-uploader {
-  width: 178px;
-  margin: 0 auto;
-}
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
+  .avatar-uploader {
+    width: 178px;
+    margin: 0 auto;
+  }
+  .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409eff;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
   .code {
     width: 100%;
     height: 40px;
