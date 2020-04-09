@@ -78,15 +78,9 @@
             <el-input v-model="form.rcode"></el-input>
           </el-col>
           <el-col :span="7" :offset="1">
-<<<<<<< HEAD
             <el-button @click="getRecode" :disabled="totalTime!=60">
               获取验证码
               <span v-if="totalTime!=60">{{totalTime}}</span>
-=======
-            <el-button @click="getRecode" :disabled="timeout!=60">
-              获取验证码
-              <span v-if="timeout!=60">{{timeout}}</span>
->>>>>>> master
             </el-button>
           </el-col>
         </el-row>
@@ -94,25 +88,16 @@
     </el-form>
     <!-- 加一个确定按钮 -->
     <div slot="footer" class="center">
-<<<<<<< HEAD
       <el-button @click="dialogFormVisible=false">取消</el-button>
-=======
-      <el-button>取消</el-button>
->>>>>>> master
       <el-button type="primary" @click="submitClick">确定</el-button>
     </div>
   </el-dialog>
 </template>
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 <script>
 import { getPhoneCode, register } from "@/api/register.js";
 export default {
   data() {
     return {
-<<<<<<< HEAD
       totalTime: 60,
       dialogFormVisible: false,
       // 图形验证码
@@ -120,30 +105,15 @@ export default {
       // 表单数据
       form: {
         // 头像地址,我们注册功能需要提交的数据
-=======
-      dialogFormVisible: false,
-      codeUrl: process.env.VUE_APP_URL + "/captcha?type=sendsms",
-      // 发送短信验证码60秒不允许 再调用
-      timeout: 60,
-      // 表单数据
-      form: {
-        // 头像地址
->>>>>>> master
         avatar: "",
         username: "", //昵称
         email: "", //邮箱
         phone: "", //手机
         password: "", //手机
-<<<<<<< HEAD
         code: "", //图形验证码
         rcode: "" //手机验证码
       },
       // 表单验证规则绑定
-=======
-        code: "", //验证码
-        rcode: "" //手机验证码
-      },
->>>>>>> master
       rules: {
         // trigger主动触发在没有在元素里面使用v-model的情况它是无效的
         avatar: [{ required: true, message: "请上传头像", trigger: "change" }],
@@ -160,10 +130,7 @@ export default {
           不通过callback("错误信息")
         }
         */
-<<<<<<< HEAD
 
-=======
->>>>>>> master
         email: [
           { required: true, message: "请输入邮箱", trigger: "change" },
           {
@@ -173,11 +140,7 @@ export default {
               if (_reg.test(value)) {
                 callback();
               } else {
-<<<<<<< HEAD
                 callback("请正确输入邮箱地址");
-=======
-                callback("请输入正确的邮箱地址");
->>>>>>> master
               }
             }
           }
@@ -203,7 +166,6 @@ export default {
         code: [
           { required: true, message: "请输入验证码", trigger: "change" },
           { min: 4, max: 4, message: "请输入4位验证码", trigger: "change" }
-<<<<<<< HEAD
         ],
         rcode: [
           { required: true, message: "请输入验证码", trigger: "change" },
@@ -215,11 +177,6 @@ export default {
     };
   },
   // 监听器
-=======
-        ]
-      },
-        // 监听器
->>>>>>> master
   /*
   对某个值进行一个监听，如果它改变了，可以对它进行一些相应处理
   // 只要dialogFormVisible为false了就要清空表单
@@ -229,7 +186,6 @@ export default {
   4:监听器本质就是一个function (newVal,oldval){}
      newVal当前值，oldVal修改前一刻的值
   */
-<<<<<<< HEAD
 
   watch: {
     dialogFormVisible(newVal) {
@@ -240,21 +196,6 @@ export default {
         this.imageUrl = "";
       }
     }
-=======
-      watch: {
-        dialogFormVisible(newVal) {
-          if (newVal == false) {
-            // 清空表单
-            this.$refs.form.resetFields();
-            // 将图片置空
-            this.imageUrl = "";
-          }
-        }
-      },
-      baseUrl: process.env.VUE_APP_URL,
-      imageUrl: "" //只是纯展示那个图片的地址
-    };
->>>>>>> master
   },
   methods: {
     // 上传前处理
@@ -296,17 +237,10 @@ export default {
         if (result) {
           register(this.form).then(res => {
             window.console.log("注册返回信息", res);
-<<<<<<< HEAD
             // 如果 api封装的好，这个判断 是可以省掉的，如果在响应拦截里面把所有处理都写好了，这里只要能收到数据就是200的数据
             //
             this.$message.success("注册成功");
             this.dialogFormVisible = false;
-=======
-            if (res.data.code == 200) {
-              this.$message.success("注册成功");
-              this.dialogFormVisible = false;
-            }
->>>>>>> master
           });
         }
       });
@@ -316,10 +250,7 @@ export default {
       this.codeUrl =
         process.env.VUE_APP_URL + "/captcha?type=sendsms&t=" + Date.now();
     },
-<<<<<<< HEAD
     // 点击获取手机验证码
-=======
->>>>>>> master
     getRecode() {
       // 访问el-form上的validateField该方法
       //该方法有二个参数，
@@ -335,17 +266,6 @@ export default {
       if (_pass === false) {
         return;
       } else {
-<<<<<<< HEAD
-=======
-        this.timeout--;
-        let interTime = setInterval(() => {
-          this.timeout--;
-          if (this.timeout == 0) {
-            this.timeout = 60;
-            clearInterval(interTime);
-          }
-        }, 1000);
->>>>>>> master
         // 调用接口获取验证码
         // axios({
         //   url: process.env.VUE_APP_URL + "/sendsms",
@@ -356,7 +276,6 @@ export default {
         //   },
         //   withCredentials: true //跨域照样协带cookie
         // })
-<<<<<<< HEAD
         // 倒计时功能
         this.totalTime--;
         let _interval = setInterval(() => {
@@ -366,29 +285,18 @@ export default {
             this.totalTime = 60;
           }
         }, 1000);
-=======
->>>>>>> master
         getPhoneCode({
           code: this.form.code,
           phone: this.form.phone
         }).then(res => {
-<<<<<<< HEAD
           window.console.log(res);
           this.$message.success(res.data.captcha + "");
-=======
-          this.$message.success(res.data.captcha + "");
-          window.console.log(res);
->>>>>>> master
         });
       }
     }
   }
 };
 </script>
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 <style lang="less" scoped>
 .register {
   .title {
@@ -408,10 +316,6 @@ export default {
   .el-dialog__header {
     padding: 0;
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> master
   .avatar-uploader {
     width: 178px;
     margin: 0 auto;
@@ -445,8 +349,4 @@ export default {
     border: 1px dashed #ccc;
   }
 }
-<<<<<<< HEAD
 </style>
-=======
-</style>
->>>>>>> master

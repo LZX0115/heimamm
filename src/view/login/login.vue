@@ -17,7 +17,6 @@
            prefix-icon  input前面图标
            show-password是否显示密码图标，以点点形式显示 
 
-<<<<<<< HEAD
      加入表单验证
        1：实现基本布局与数据绑定
        2：在el-form上绑定一个rules属性  rules属性的值要是一个对象（需在data里定义rules的值）
@@ -37,9 +36,6 @@
            })
                   
       -->
-=======
-      <!-- 表单 -->
->>>>>>> master
       <el-form :model="form" :rules="rules" ref="form">
         <el-form-item prop="phone">
           <el-input prefix-icon="el-icon-user" v-model="form.phone" placeholder="请输入手机号"></el-input>
@@ -62,11 +58,7 @@
               <el-input v-model="form.code" prefix-icon="el-icon-key" placeholder="请输入验证码"></el-input>
             </el-col>
             <el-col :span="8">
-<<<<<<< HEAD
               <img :src="code" @click="codeClick" class="key" alt />
-=======
-              <img src="@/assets/img/key.png" class="key" alt />
->>>>>>> master
             </el-col>
           </el-row>
         </el-form-item>
@@ -75,34 +67,19 @@
           v-model默认值可以来一个空字符串，这样的的选择结果就是true/false
           el-link  type决定颜色 
         -->
-<<<<<<< HEAD
         <el-form-item>
           <el-checkbox v-model="form.isCheck">
             我已阅读并同意
             <el-link type="primary">用户协议</el-link>和
             <el-link type="primary">隐私条款</el-link>
           </el-checkbox>
-=======
-        <el-form-item v-model="form.isCheck">
-          <el-checkbox>
-            我已阅读并同意
-            <el-link type="primary">用户协议</el-link>和
-            <el-link type="primary">隐私条款</el-link>
-          </el-checkbox>
-        </el-form-item>
-        <el-form-item>
-          <el-button class="btn" type="primary" @click="loginClick">登录</el-button>
->>>>>>> master
         </el-form-item>
         <!-- el-button
              type="值"  值决定按钮的颜色
         -->
         <el-form-item>
-<<<<<<< HEAD
           <el-button class="btn" type="primary" @click="loginClick">登陆</el-button>
           <br />
-=======
->>>>>>> master
           <el-button class="btn" type="primary" @click="registerClick">注册</el-button>
         </el-form-item>
       </el-form>
@@ -114,24 +91,15 @@
     1：导入子组件   import 名字 from 路径
     2:注册   components:{register}
     3:当标签使用  
-<<<<<<< HEAD
     
     
-=======
->>>>>>> master
     -->
     <register ref="register"></register>
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import register from "./register.vue";
-=======
-// 导入
-import register from "./register.vue";
-// 注册
->>>>>>> master
 export default {
   name: "login",
   components: {
@@ -139,7 +107,6 @@ export default {
   },
   data() {
     return {
-<<<<<<< HEAD
       code: process.env.VUE_APP_URL + "/captcha?type=login",
       //表单绑定的值
       form: {
@@ -149,14 +116,6 @@ export default {
         isCheck: "" //   是否同意协议
       },
       //表单验证规则
-=======
-      form: {
-        phone: "", // 手机号
-        password: "", //密码
-        isCheck: "", //条款
-        code: "" //验证码
-      },
->>>>>>> master
       rules: {
         phone: [{ required: true, message: "请输入手机号", trigger: "change" }],
         password: [
@@ -164,16 +123,11 @@ export default {
           {
             min: 6,
             max: 12,
-<<<<<<< HEAD
             message: "请输入6到12位长度密码",
-=======
-            message: "请输入6-12位长度的密码",
->>>>>>> master
             trigger: "change"
           }
         ],
         code: [
-<<<<<<< HEAD
           { required: true, message: "请输入验证码", trigger: "change" },
           {
             min: 4,
@@ -181,25 +135,13 @@ export default {
             message: "请正确输入验证码",
             trigger: "change"
           }
-=======
-          { required: true, message: "请输入图形验证码", trigger: "change" },
-          { min: 4, max: 4, message: "请输入正确的验证码", trigger: "change" }
->>>>>>> master
         ]
       }
     };
   },
-<<<<<<< HEAD
   mounted() {},
   methods: {
     // 登陆点击
-=======
-    // mounted() {
-    // alert(process.env.VUE_APP_URL);
-  // },
-  methods: {
-    // 登录点击
->>>>>>> master
     loginClick() {
       this.$refs.form.validate(result => {
         this.$message.success(result + "");
@@ -207,7 +149,6 @@ export default {
     },
     // 注册点击
     registerClick() {
-<<<<<<< HEAD
       // 打开register里的弹窗组件
       // 1：在register组件 上定义一个ref属性  ref=值
       //2：通过this.$refs.值.dialogFormVisible=true
@@ -217,11 +158,6 @@ export default {
     codeClick() {
       this.code =
         process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
-=======
-       // 1：在register组件 上定义一个ref属性  ref=值
-      //2：通过this.$refs.值.dialogFormVisible=true
-      this.$refs.register.dialogFormVisible = true;
->>>>>>> master
     }
   }
 };
