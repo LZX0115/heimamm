@@ -6,11 +6,11 @@
 */
 
 import instance from '@/utils/request.js'
-function sendsms(data) {
+function getPhoneCode(data) {
     return instance({
         url: "/sendsms",
         method: "post",
-        data: data,
+        data
     })
 }
 function register(data) {
@@ -20,4 +20,4 @@ function register(data) {
         data,
     })
 }
-export { sendsms, register }
+export { getPhoneCode, register, }
