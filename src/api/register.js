@@ -8,21 +8,38 @@
 import axios from 'axios'
 import { Message } from 'element-ui';
 var instance = axios.create({
+<<<<<<< HEAD
     baseURL: process.env.VUE_APP_URL,   //设置基地址
     withCredentials: true //跨域照样协带cookie
 });
+=======
+    baseURL: process.env.VUE_APP_URL, // 设置基地址
+    withCredentials: true //跨域照样协带cookie
+  });
+>>>>>>> master
 // 添加请求拦截器
 instance.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     return config;
+<<<<<<< HEAD
 }, function (error) {
     // 对请求错误做些什么
     return Promise.reject(error);
 });
+=======
+  }, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+  });
+>>>>>>> master
 
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
     // 对响应数据做点什么
+<<<<<<< HEAD
+=======
+    // return response;
+>>>>>>> master
     if (response.data.code == 200) {
         // 因为返回数据里面axios帮我们额外的包了一层data但实际我们基本不用，所以我们把它干掉
         return response.data;
@@ -34,6 +51,7 @@ instance.interceptors.response.use(function (response) {
         Message.error(response.data.message)
         return Promise.reject("error");
     }
+<<<<<<< HEAD
     // switch (response.data.code) {
     //     case 200:
     //         return response;
@@ -57,11 +75,26 @@ instance.interceptors.response.use(function (response) {
 function getPhoneCode(data) {
     return instance({
         url: "/sendsms",
+=======
+
+  }, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+  });
+
+
+
+
+  function register(data) {
+    return instance({
+        url: "/register",
+>>>>>>> master
         method: "post",
         data      //data: data   
     })
 }
 
+<<<<<<< HEAD
 function register(data) {
     return instance({
         url: "/register",
@@ -74,3 +107,14 @@ function register(data) {
 // export default我们看不出来页面用了些什么接口，它一个js只能使用一个export default
 //
 export { getPhoneCode, register }
+=======
+function getPhoneCode(data) {
+    return instance({
+        url: "/sendsms",
+        method: "post",
+        data: data,
+     
+    })
+}
+export {getPhoneCode,register}
+>>>>>>> master
