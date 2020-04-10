@@ -18,6 +18,11 @@ import VueRouter from "vue-router"
 // 导入登陆组件
 import login from '@/view/login/login.vue'
 import layout from '@/view/home/layout.vue'
+import business from '@/view/home/business/business.vue'
+import chart from '@/view/home/chart/chart.vue'
+import question from '@/view/home/question/question.vue'
+import subject from '@/view/home/subject/subject.vue'
+import userList from '@/view/home/userList/userList.vue'
 // 注册
 import Vue from 'vue'
 Vue.use(VueRouter)
@@ -31,9 +36,47 @@ const router = new VueRouter({
         },
         {
             path: "/home",
-            component: layout
+            redirect:"/home/chart",
+            component: layout,
+
+            children:[
+                {
+                    path: "business",
+                    component: business
+                },
+                {
+                    path: "chart",
+                    component: chart
+                },
+                {
+                    path: "question",
+                    component: question
+                },
+                {
+                    path: "subject",
+                    component: subject
+                },
+                {
+                    path: "userList",
+                    component: userList
+                },
+            ]
         },
     ]
+})
+// 路由导航守卫
+import  NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+
+router.beforeEach((to,from,next) =>{
+    NProgress.start()
+    next()
+})
+
+// 进入后守卫
+router.afterEach((to,from) =>{
+    NProgress.done()
+    window.console.log(from)
 })
 // 输出 出去
 export default router

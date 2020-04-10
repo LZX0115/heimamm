@@ -3,7 +3,8 @@
 
 import axios from 'axios'
 import { Message } from 'element-ui';
-import { getToken } from './token.js'
+import { getToken,removeToken } from './token.js'
+import router from '@/router/router.js'
 var instance = axios.create({
     baseURL: process.env.VUE_APP_URL,   //设置基地址
     withCredentials: true //跨域照样协带cookie
@@ -27,7 +28,17 @@ instance.interceptors.response.use(function (response) {
     if (response.data.code == 200) {
         // 因为返回数据里面axios帮我们额外的包了一层data但实际我们基本不用，所以我们把它干掉
         return response.data;
-    } else {
+    } else if(response.data.code == 206){
+        // Token出错处理
+        Message.error(response.data.message)
+        // 跳转登录页
+        router.push("/")
+        // 清理掉Token
+        removeToken();
+        return Promise.reject("error");
+    }
+    
+    else {
         // 提示用户错误
         // 出错了我们还有必要返回数据出去吗？
         //抛出一个错误，不要让后面代码执行

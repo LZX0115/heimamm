@@ -101,7 +101,8 @@
 <script>
 import { toLogin } from "@/api/login.js";
 import register from "./register.vue";
-import { saveToken } from "@/utils/token.js";
+import { saveToken,getToken } from "@/utils/token.js";
+
 export default {
   name: "login",
   components: {
@@ -180,10 +181,12 @@ export default {
             window.console.log("登陆信息：", res);
                    // 保存token
             saveToken(res.data.token);
+            this.$router.push("/home")
           });
         }
       });
     },
+ 
     // 注册点击
     registerClick() {
       // 打开register里的弹窗组件
@@ -196,7 +199,12 @@ export default {
       this.code =
         process.env.VUE_APP_URL + "/captcha?type=login&t=" + Date.now();
     }
-  }
+  },
+     created() {
+      if(getToken()){
+        this.$router.push("/home");
+      }
+    },
 };
 </script>
 
