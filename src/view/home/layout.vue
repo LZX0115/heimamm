@@ -7,8 +7,8 @@
         <span class="title">黑马面面</span>
       </div>
       <div class="right">
-        <img class="avatar" :src="userInfo.avatar" alt />
-        <span class="name">{{userInfo.username}}，您好</span>
+        <img class="avatar" :src="$store.state.userInfo.avatar" alt />
+        <span class="name">{{$store.state.userInfo.username}}，您好</span>
         <el-button @click="exit" type="primary">退出</el-button>
       </div>
     </el-header>
@@ -76,12 +76,14 @@ export default {
     };
   },
     created(){
+     
       // 获取用户信息
       getUserInfo().then(res =>{
         this.userInfo = res.data;
         this.userInfo.avatar =
        process.env.VUE_APP_URL + "/" + this.userInfo.avatar;
       window.console.log("用户信息：", res);
+      this.$store.state.userInfo =  this.userInfo;
     });
   //  首页进行token判断，没有token的话就跳转到登录页
       if(!getToken()){

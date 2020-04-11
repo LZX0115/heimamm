@@ -42,23 +42,43 @@ const router = new VueRouter({
             children:[
                 {
                     path: "business",
-                    component: business
+                    component: business,
+                    meta:{
+                        title:"企业列表",
+
+                    }
                 },
                 {
                     path: "chart",
-                    component: chart
+                    component: chart,
+                    meta:{
+                        title:"数据概览",
+
+                    }
                 },
                 {
                     path: "question",
-                    component: question
+                    component: question,
+                    meta:{
+                        title:"题库列表",
+
+                    }
                 },
                 {
                     path: "subject",
-                    component: subject
+                    component: subject,
+                    meta:{
+                        title:"学科列表",
+
+                    }
                 },
                 {
                     path: "userList",
-                    component: userList
+                    component: userList,
+                    meta:{
+                        title:"用户列表",
+
+                    }
                 },
             ]
         },
@@ -77,6 +97,7 @@ router.beforeEach((to,from,next) =>{
 router.afterEach((to,from) =>{
     NProgress.done()
     window.console.log(from)
+    document.title = to.meta.title
 })
 // 输出 出去
 export default router
