@@ -36,7 +36,7 @@ const router = new VueRouter({
         },
         {
             path: "/home",
-            redirect:"/home/chart",
+            redirect:"/home/subject",
             component: layout,
 
             children:[
